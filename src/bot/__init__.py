@@ -28,14 +28,12 @@ import logging
 
 
 COGS = [path.split(os.sep)[-1][:-3] for path in glob("./src/cogs/*.py")]
-print(COGS)
-PREFIX = "!"
-OWNER_IDS = [269165863515586560]
-GUILD_IDS = [544213180193308672]
 _log = logging.getLogger(__name__)
 with open("./src/bot/config.json") as config_file:
     config = json.load(config_file)
 
+OWNER_IDS = config.get("discord").get("owner_ids")
+GUILD_IDS = config.get("discord").get("guilds_ids")
 
 class Ready(object):
     def __init__(self):
@@ -182,10 +180,10 @@ class Bot(BotBase):
 
     async def on_ready(self):
         if not self.ready:
-            self.guild = self.get_guild(544213180193308672)
-            self.stdout = self.get_channel(869824769980235826)
-            self.logs = self.get_channel(869824566774628402)
-            self.logs2 = self.get_channel(869824586072608778)
+            self.guild = self.get_guild(config.get("discord").get("primary_guild"))
+            self.stdout = self.get_channel(config.get("discord").get("stdout"))
+            # self.logs = self.get_channel(869824566774628402)
+            # self.logs2 = self.get_channel(869824586072608778)
 
             await self.stdout.purge(limit=1000)
 
