@@ -1,0 +1,28 @@
+from discord.ext.commands import Cog, MissingPermissions, Bot
+from discord import Embed, Colour, app_commands
+from datetime import datetime
+import discord
+import logging
+
+
+_log = logging.getLogger(__name__)
+
+
+class {{Name}}(Cog):
+    def __init__(self, bot: Bot) -> None:
+        self.bot = bot
+
+    @app_commands.command(name="test", description="A test command!")
+    async def test(self, interaction: discord.Interaction) -> None:
+        await interaction.response.send_message("Test", ephemeral=True)
+
+    @Cog.listener()
+    async def on_ready(self) -> None:
+        if not self.bot.ready:
+            self.bot.cogs_ready.ready_up("{{name}}")
+            await self.bot.stdout.send("` /src/cogs/{{name}}.py ready`")
+            _log.info(" Ready Up!")
+
+
+async def setup(bot: Bot) -> None:
+    await bot.add_cog({{Name}}(bot))
